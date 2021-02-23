@@ -13,6 +13,7 @@
   "dependencies": {
     "@ant-design/pro-layout": "^6.5.0",
     "@umijs/preset-react": "1.x",
+    "got": "^11.8.1",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-ejs": "^4.3.0",
