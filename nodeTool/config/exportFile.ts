@@ -1,5 +1,5 @@
-const execa = require('execa')
-const { TOOL } = require('./constants')
+import * as execa from 'execa'
+import { TOOL, PATH_DIST_TOOLS } from '../constants'
 
 /**
  * 一键导出文件
@@ -7,7 +7,7 @@ const { TOOL } = require('./constants')
  * @param prompts 需要追加的问题
  * @param handle 回调处理
  */
-const exportFile = {
+export const exportFile = {
 	choice: { name: '一键导出文件', value: TOOL.EXPORT_FILE },
 	prompts: [
 		{
@@ -26,15 +26,11 @@ const exportFile = {
 	],
 	handle: ({ folderPath, fileName }) => {
 		if (!folderPath) {
-			return console.log('\n【error】未获取到目标路径\n')
+			return console.log('\n【失败】Σ(っ°Д°)っ => 未获取到目标路径（相对路径）\n')
 		}
-		const command = `node ./nodeTool/tools/exportFile ${folderPath} ${fileName}`
+		const command = `node ${PATH_DIST_TOOLS}/exportFile.js ${folderPath} ${fileName}`
 		execa.command(command).then(res => {
 			console.log(res.stdout)
 		})
 	},
-}
-
-module.exports = {
-	exportFile,
 }

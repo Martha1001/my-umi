@@ -1,20 +1,20 @@
-const fs = require('fs')
-
 /**
  * 一键生成汇总导出文件
  * node [exportFile.js] [folderPath] [fileName]?
  */
 ;(() => {
+	const fs = require('fs')
+
 	try {
-		console.log('\n=============== exportFile begin ===============\n')
-		const [folderPath, fileName = 'index.ts'] = process.argv.splice(2)
+		console.log('\n=============== 一键导出文件 开始 ===============\n')
+		const [folderPath = '', fileName = 'index.ts'] = process.argv.splice(2)
 		if (!folderPath) {
-			return console.log('err => 未获取到 path（相对路径）')
+			return console.log('【失败】Σ(っ°Д°)っ => 未获取到目标路径（相对路径）')
 		}
 		const _fileName = fileName.includes('.ts') ? fileName : `${fileName}.ts`
 		const relativePath = `./${folderPath}`
 		const exportFilePath = `${relativePath}/${_fileName}`
-		const exportList = []
+		const exportList: string[][] = []
 		let writeStr = ''
 		const firstUpperCase = s => s.replace(/^\S/, s => s.toUpperCase())
 		const isEffectiveFile = dir => dir !== _fileName && dir.includes('.') && dir.indexOf('.') !== 0
@@ -31,8 +31,8 @@ const fs = require('fs')
 			dirList.pop()
 			const fullPath = dirList.join('.')
 			const isTsxFolder = dirList[1] === 'tsx'
-			const fullName = dirList.map(d => (isTsxFolder ? firstUpperCase(d) : d)).join('')
-			const sourceFile = fs.readFileSync(`${relativePath}/${dir}`, 'utf-8')
+			const fullName: string = dirList.map(d => (isTsxFolder ? firstUpperCase(d) : d)).join('')
+			const sourceFile: string = fs.readFileSync(`${relativePath}/${dir}`, 'utf-8')
 			// 移除注释文本
 			const regNotes = /("([^\\\"]*(\\.)?)*")|('([^\\\']*(\\.)?)*')|(\/{2,}.*?(\r|\n|$))|(\/\*(\n|.)*?\*\/)/g
 			const file = sourceFile.replace(regNotes, word => (/^\/{2,}/.test(word) || /^\/\*/.test(word) ? '' : word))
@@ -66,9 +66,9 @@ const fs = require('fs')
 				if (!matchList.length) {
 					return
 				}
-				const aliasList = []
-				const exportItemList = matchList.map(match => {
-					let alias = match
+				const aliasList: string[] = []
+				const exportItemList: string[] = matchList.map(match => {
+					let alias: string = match
 					if (`${exportList.join()},`.includes(`${match},`)) {
 						match = fullName + firstUpperCase(match)
 						alias = `${alias} as ${match}`
@@ -80,11 +80,10 @@ const fs = require('fs')
 				isExportDefault ? exportList.push([fullName, ...exportItemList]) : exportList.push(exportItemList)
 				writeStr += `import ${isExportDefault ? `${fullName}, ` : ''}{ ${aliasList.join(', ')} } from './${fullPath}'\n`
 			}
-			// console.log('file =>', dir)
 		})
 		if (!writeStr) {
-			console.log('[失败]', '未发现可导出内容 Σ(っ°Д°)っ')
-			return console.log('\n================ exportFile end ================\n')
+			console.log(`【失败】Σ(っ°Д°)っ`, '未发现可导出内容')
+			return console.log('\n=============== 一键导出文件 结束 ===============\n')
 		}
 		// export
 		writeStr += '\nexport {\n'
@@ -95,9 +94,9 @@ const fs = require('fs')
 
 		// write
 		fs.writeFileSync(exportFilePath, writeStr)
-		console.log('[成功] =>', exportFilePath, '(•̀ᴗ•́)و ̑̑')
-		console.log('\n================ exportFile end ================\n')
+		console.log(`【成功】'(•̀ᴗ•́)و ̑̑ 导出文件`, exportFilePath)
+		console.log('\n=============== 一键导出文件 结束 ===============\n')
 	} catch (err) {
-		console.log('exportFile err =>', err)
+		console.log('【err】一键导出文件 =>', err)
 	}
 })()
