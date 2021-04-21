@@ -12,7 +12,9 @@
     "tool": "node nodeTool"
   },
   "dependencies": {
+    "@ant-design/pro-form": "^1.21.0",
     "@ant-design/pro-layout": "^6.5.0",
+    "@ant-design/pro-table": "^2.34.0",
     "@umijs/preset-react": "1.x",
     "got": "^11.8.1",
     "koa": "^2.13.1",
