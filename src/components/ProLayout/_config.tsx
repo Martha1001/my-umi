@@ -4,13 +4,13 @@ import type { BasicLayoutProps } from '@ant-design/pro-layout'
  * layout 的左上角 的 title
  * @type {React.ReactNode} 'Ant Design Pro'
  */
-export const title: BasicLayoutProps['title'] = 'antd5'
+export const title: BasicLayoutProps['title'] = 'Ant Design Pro'
 
 /**
  * layout 的左上角 logo 的 url
  * @type {React.ReactNode | ()=> React.ReactNode} -
  */
-export const logo: BasicLayoutProps['logo'] = 'assets/logo.png'
+export const logo: BasicLayoutProps['logo'] = undefined
 
 /**
  * 是否删除掉所有的自带界面
